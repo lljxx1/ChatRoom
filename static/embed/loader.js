@@ -49,8 +49,8 @@ function addCssByLink(url) {
         window.addEventListener("message", receiveMessage, false);
 
         var div = document.createElement('div');
-        var pUrl = "https://im.adbug.cn/";
-        // var pUrl = "http://localhost:3000/";
+        // var pUrl = "https://im.adbug.cn/";
+        var pUrl = "http://localhost:3000/";
 
         div.innerHTML = '<iframe marginheight="0" style="border: 0px; visibility: visible; width: 100%; height: 100%; margin: 0px; padding: 0px;" marginwidth="0" frameborder="0" allowtransparency="true"  src="' + pUrl + '"></iframe>';
         div.style.display = "none";
@@ -165,7 +165,7 @@ function addCssByLink(url) {
             updateunRead();
         }
 
-        
+
         function loginSuccess(msg) {
             label.style = "display:block";
             div.style = "position: fixed; top: 0px; box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 8px; height: 100%; width: 530px; right:-530px; z-index: 2000000013;";
@@ -210,6 +210,27 @@ function addCssByLink(url) {
                 var msg = Object.assign({
                     'method': 'login',
                 }, user);
+                sendMessage(msg);
+            },
+
+            loginAsGuest: function(){
+                var cachedUserInfo = window.localStorage.getItem('im_guest');
+                if(!cachedUserInfo){
+                    var ramdonId = Math.floor(Math.random() * 100000000);
+                    var uid = 'guest'+ ramdonId;
+                    var name = '游客'+ramdonId;
+                    var cachedUserInfo = {
+                        'username': name,
+                        'userId': uid,
+                        'avatarUrl': 'http://file.adbug.cn/icon/default.png'
+                    }
+                    window.localStorage.setItem('im_guest', JSON.stringify(cachedUserInfo));
+                }else{
+                    cachedUserInfo = JSON.parse(cachedUserInfo);
+                }
+                var msg = Object.assign({
+                    'method': 'login',
+                }, cachedUserInfo);
                 sendMessage(msg);
             }
         }

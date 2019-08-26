@@ -363,6 +363,10 @@ new Vue({
           })
           socket.on("loginFail", function (msg) {
             console.log('loginFail')
+            self.sendMessageToParent({
+              method: 'loginFail',
+              msg: msg
+            });
           })
         }
       }
