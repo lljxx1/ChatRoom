@@ -121,7 +121,14 @@ function addCssByLink(url) {
             if(unReadCount > 0){
                 notifyEl.innerText = unReadCount;
                 notifyEl.style.display = 'inline-block';
+                if(document.title.indexOf('条消息') > -1){
+                    document.title = "（"+unReadCount+"条消息）"+(document.title.split('条消息）')[1]);
+                }else{
+                    document.title = "（"+unReadCount+"条消息）"+document.title;
+                }
+
             }else{
+                document.title = document.title.split('条消息）')[1];
                 notifyEl.style.display = 'none';
             }
         }
