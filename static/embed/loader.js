@@ -138,6 +138,7 @@ function addCssByLink(url) {
             label.style = "display:block";
             isOpend = false;
             closePannelAni();
+            console.log('closePannel')
         }
 
         function usersChange(msg) {
