@@ -49,8 +49,8 @@ function addCssByLink(url) {
         window.addEventListener("message", receiveMessage, false);
 
         var div = document.createElement('div');
-        // var pUrl = "https://im.adbug.cn/";
-        var pUrl = "http://localhost:3000/";
+        var pUrl = "https://im.adbug.cn/";
+        // var pUrl = "http://localhost:3000/";
 
         div.innerHTML = '<iframe marginheight="0" style="border: 0px; visibility: visible; width: 100%; height: 100%; margin: 0px; padding: 0px;" marginwidth="0" frameborder="0" allowtransparency="true"  src="' + pUrl + '"></iframe>';
         div.style.display = "none";
