@@ -128,7 +128,9 @@ function addCssByLink(url) {
                 }
 
             }else{
-                document.title = document.title.split('条消息）')[1];
+                if(document.title.indexOf('条消息') > -1){
+                    document.title = document.title.split('条消息）')[1];
+                }
                 notifyEl.style.display = 'none';
             }
         }
