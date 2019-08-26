@@ -36,6 +36,9 @@ function addCssByLink(url) {
                     if (data.method == "usersChange") {
                         usersChange(data);
                     }
+                    if (data.method == "reciveChatMessage") {
+                        reciveChatMessage(data);
+                    }
                 }
                 if (data.loginSuccess) {
                     loginSuccess(data);
@@ -86,6 +89,9 @@ function addCssByLink(url) {
 
         var tween = liike(slideOut);
 
+        var unReadCount = 0;
+        var lastReadTime = 0;
+
         function showPannel() {
             tween(div, {
                 delay: 0,
@@ -122,7 +128,6 @@ function addCssByLink(url) {
             }, 1000);
         }
 
-
         var isReady = false;
 
         function whenFrameReady() {
@@ -136,6 +141,10 @@ function addCssByLink(url) {
 
         function updateCount(count) {
             countLabel.innerText = '(' + count + ')';
+        }
+
+        function reciveChatMessage(msg){
+            console.log('reciveChatMessage', msg)
         }
 
         function loginSuccess(msg) {

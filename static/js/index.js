@@ -431,10 +431,11 @@ new Vue({
         type: "receive",
         isRead: isRead
       }
-      this.addMessage(message)
+      this.addMessage(message);
       if (this.setting.isVoice && channelId != "group") {
         this.$refs.audio.play();
       }
+      this.sendMessageToParent(message);
     },
     //添加消息
     addMessage: function (message) {
