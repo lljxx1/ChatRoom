@@ -98,7 +98,7 @@ io.sockets.on('connection', function (socket) {
       socket.emit('loginSuccess', from, []);
     }
     socket.broadcast.emit('groupMessage', socket.user, msg);
-    if(recentMessages.length > 5){
+    if(recentMessages.length > 60){
       recentMessages.shift();
     }
 
