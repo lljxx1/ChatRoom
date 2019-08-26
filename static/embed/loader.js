@@ -190,7 +190,7 @@ function addCssByLink(url) {
             }
         });
 
-        addCssByLink(pUrl + 'static/css/embed.css?ver=201908061533');
+        addCssByLink(pUrl + 'static/css/embed.css?ver=201908061610');
 
         var readyCallBacks = [];
         function sendMessage(msg) {
