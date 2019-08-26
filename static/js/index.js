@@ -339,7 +339,6 @@ new Vue({
     }
   },
   created: function () {
-
     var self = this;
     socket.on('connect', function(msg){
       if(self.isLogin){
