@@ -193,6 +193,8 @@
 
 //创建socket链接
 var socket = io.connect({
+  upgrade: false, 
+  transports: ['websocket'],
   reconnection: true,
   reconnectionDelay: 1000,
   reconnectionDelayMax : 5000,
