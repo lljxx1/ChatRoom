@@ -177,7 +177,7 @@ function addCssByLink(url) {
         function loginSuccess(msg) {
             if(!isOpend){
                 label.style = "display:block";
-                div.style = "position: fixed; top: 0px; box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 8px; height: 100%; width: 530px; right:-530px; z-index: 2000000013;";
+                div.style = "position: fixed; top: 0px; box-shadow: rgba(0, 0, 0, 0.28) 0px 0px 8px; height: 100%; width: 530px; right:-530px; z-index: 2000000013;";
                 div.style.display = "block";
             }
             console.log('loginSuccess', msg)
