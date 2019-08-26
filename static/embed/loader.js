@@ -17,7 +17,7 @@ function addCssByLink(url) {
 ; (function () {
     function imLoader(conf) {
         conf = conf || {};
-        var buttonName = conf.name || '用户交流';
+        var buttonName = conf.name || '消息';
         function receiveMessage(event) {
             var data = null;
             try {
@@ -47,13 +47,20 @@ function addCssByLink(url) {
 
         var div = document.createElement('div');
         var pUrl = "https://im.adbug.cn/";
+
         div.innerHTML = '<iframe marginheight="0" style="border: 0px; visibility: visible; width: 100%; height: 100%; margin: 0px; padding: 0px;" marginwidth="0" frameborder="0" allowtransparency="true"  src="' + pUrl + '"></iframe>';
         div.style.display = "none";
 
         document.body.appendChild(div);
 
         var label = document.createElement('div');
-        label.innerHTML = '<div class="btn-chat-rooom" style="box-shadow: 0 2px 6px 0 rgba(0,0,0,.4);cursor: pointer; text-align:center; background-color: rgb(63, 139, 190);color:white; width:65px;position:fixed; width: 182px;height: 50px; line-height: 50px;bottom: -6px;right: 50px;display: block;">' + buttonName + '<span style="" id="chat-im-online">(2)</span></div>'
+
+        var useStatusHtml = '<div class="im-user-block"><img src ="http://file.adbug.cn/icon/default.png" height="22" class="im-user-avatar"/><div class="presence-indicator--is-online"></div></div>'
+
+        label.innerHTML = '<div class="btn-chat-rooom" style="box-shadow: 0 2px 6px 0 rgba(0,0,0,.4);cursor: pointer;background-color: rgb(63, 139, 190);color:white; width:65px;position:fixed; height: 50px; bottom: -6px;right: 50px;display: block;">'+
+        useStatusHtml + 
+        buttonName + '<span style="" id="chat-im-online">(2)</span></div>';
+
         document.body.appendChild(label);
         label.style = "display:none";
 
@@ -157,6 +164,7 @@ function addCssByLink(url) {
         });
 
         addCssByLink(pUrl + 'static/css/embed.css');
+        // addCssByLink('/static/css/embed.css');
 
         var readyCallBacks = [];
         function sendMessage(msg) {

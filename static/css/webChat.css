@@ -125,6 +125,7 @@ body{
     width: 100%;
     height: 100%;
 }
+
 /************用户列表及搜索样式表**************/
 .ui-users-box{
     float: left;
@@ -133,7 +134,9 @@ body{
     position: relative;
     background: #ffffff;
     border-right: 1px solid #d1d1d1;
+    display: none;
 }
+
 .ui-user-search input{
     outline: none;
     border: none;
@@ -258,6 +261,10 @@ body{
 
 .side-open .ui-messages-box{
     margin-left: 180px;
+}
+
+.side-open .ui-users-box {
+    display: block;
 }
 
 .ui-channel-header{

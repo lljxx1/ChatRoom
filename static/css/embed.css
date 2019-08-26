@@ -3,8 +3,40 @@
     transition: 0.3s;
     bottom: -8px;
     border-radius: 2px 2px 0 0;
+    position: relative;
+    width: 85px;
+    padding-left: 54px;
+    padding-right: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 45px;
 }
 
 .btn-chat-rooom:hover {
     background-color: rgb(15, 118, 187)
+}
+
+.im-user-block {
+    position: absolute;
+    left: 12px;
+    top: 11px
+}
+
+.im-user-avatar {
+    border-radius: 11px;
+}
+
+.presence-indicator--is-online {
+    width: 8px;
+    height: 8px;
+    background: #469a1f;
+}
+
+
+.im-user-block .presence-indicator--is-online {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px #fff;
 }
