@@ -285,7 +285,7 @@ new Vue({
         {
           id: "group",
           avatarUrl: "/static/images/group-icon.png",
-          name: "广告查查交流群",
+          name: "用户交流",
           type: "room"
         }
       ],
@@ -295,6 +295,7 @@ new Vue({
       channelId: "group",
       //输入框的内容
       text: "",
+      openSide: false,
       //设置
       setting: {
         isShowTime: true,
@@ -331,6 +332,8 @@ new Vue({
     //初始化自动更换页面背景，背景图来源于Bing
     // this.initBg();
 
+    var self = this;
+
     function receiveMessage(event){
       var data = null; 
       try{
@@ -341,10 +344,22 @@ new Vue({
         if( data.method == "login"){
           socket.emit("login", {
             name: data.username,
-            avatarUrl: ''
+            uid: data.userId,
+            avatarUrl: data.avatarUrl
           })
-          socket.on("loginSuccess", function (user, users) {
-            console.log('loginSuccess', user)
+          socket.on("loginSuccess", function (user, users, recentMessages) {
+            console.log('loginSuccess', user, recentMessages)
+            window.parent.postMessage(JSON.stringify({
+              'loginSuccess': "yes",
+              'count': users.length
+            }), "*");
+            recentMessages.forEach(function(recentMessage){
+              if(recentMessage.from.uid == user.uid){
+                recentMessage.type = "send";
+              }
+              console.log(recentMessage, user);
+              self.addMessage(recentMessage)
+            })
           })
           socket.on("loginFail", function (msg) {
             console.log('loginFail')
@@ -378,9 +393,14 @@ new Vue({
     }
   },
   methods: {
+    toggleSide: function(){
+      this.openSide = !this.openSide;
+    },
+    sendMessageToParent: function(msg){
+      window.parent.postMessage(JSON.stringify(msg), "*");
+    },
 
     closeSelf: function(){
-
       window.parent.postMessage(JSON.stringify({
         method: "close"
       }), "*")
@@ -537,7 +557,7 @@ new Vue({
       socket.on('system', function (user, type) {
         if (type == "join") {
           user.messages = []
-          _this.users.push(user)
+          _this.users.push(user);
         }
         if (type == "logout") {
           _this.users.forEach(function (item, index) {
@@ -549,7 +569,12 @@ new Vue({
             _this.changeChannel("group");
           }
         }
-      })
+        _this.sendMessageToParent({
+          method: 'usersChange',
+          count: _this.users.length
+        })
+      });
+
       socket.on("message", function (user, text) {
         _this.receiveMessage(text, user, user.id)
       })

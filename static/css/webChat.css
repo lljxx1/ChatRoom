@@ -119,6 +119,7 @@ body{
     /* margin-left: 60px; */
     height: 100%;
     background: #ffffff;
+    border-left: 1px solid #eee;
 }
 .ui-webChat-item{
     width: 100%;
@@ -127,7 +128,7 @@ body{
 /************用户列表及搜索样式表**************/
 .ui-users-box{
     float: left;
-    width: 220px;
+    width: 180px;
     height: 100%;
     position: relative;
     background: #ffffff;
@@ -251,9 +252,14 @@ body{
 .ui-messages-box{
     background: #eeeeee;
     height: 100%;
-    /* margin-left: 221px; */
+    /* margin-left: 180px; */
     position: relative;
 }
+
+.side-open .ui-messages-box{
+    margin-left: 180px;
+}
+
 .ui-channel-header{
     margin: 0 10px;
     height: 36px;
@@ -312,12 +318,34 @@ body{
     background: url(../images/close.png) no-repeat center;
     background-size: 22px;
     position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 555555;
+    cursor: pointer;
+}
+
+.toggleBtn {
+    width: 30px;
+    height: 30px;
+    padding-top: 5px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 25px;
+    color: #6a737d;
+    background: url(../images/ar.png) no-repeat center;
+    background-size: 22px;
+    position: absolute;
     left: 0px;
     top: 0px;
     z-index: 555555;
     cursor: pointer;
 }
 
+.side-open .toggleBtn {
+    left: 180px;
+    background: url(../images/al.png) no-repeat center;
+    background-size: 22px;
+}
 
 .ui-message-textBox{
     margin: 0 10px;
@@ -423,10 +451,14 @@ body{
 }
 .ui-expression-wrap{
     position: absolute;
-    left: 0;
+    left: 50px;
     bottom: 100%;
     margin-bottom: 10px;
     margin-left: -50px;
+}
+
+.side-open .ui-expression-wrap {
+    left: -100px;
 }
 .ui-expression-body a{
     display: block;
@@ -769,3 +801,7 @@ body{
     color: #9f9f9f;
 }
 /******************************************************************/
+
+body, textarea  {
+    font-family: Arial,Microsoft YaHei UI,Helvetica Neue,Helvetica,sans-serif;
+}

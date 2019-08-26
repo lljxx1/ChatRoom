@@ -17,8 +17,9 @@
 <!--主界面模版-->
 <script id="webChat" type="text/html">
     <div id="app" v-cloak>
-        <div class="ui-webChat-box" v-if="isLogin">
+        <div class="ui-webChat-box" v-if="isLogin" :class="{ 'side-open': openSide }">
             <div class="closeBtn" @click="closeSelf"></div>
+            <div class="toggleBtn" @click="toggleSide"></div>
             <audio src="/static/images/8400.mp3" ref="audio"></audio>
             <div class="ui-webChat-menuBox" v-if="0">
                 <div class="ui-userCard">
@@ -33,7 +34,7 @@
             </div>
             <div class="ui-webChat-content" >
                 <div class="ui-webChat-item ui-webChat-thread" v-show="tab=='chat'">
-                    <div class="ui-users-box" v-if="0">
+                    <div class="ui-users-box">
                         <div class="ui-user-search">
                             <span class="fa fa-search ui-icon-search"></span>
                             <input type="text" placeholder="搜索" v-model="keyWord">
@@ -51,10 +52,10 @@
                         </div>
                     </div>
                     <div class="ui-messages-box">
-                        <div class="ui-channel-header">{{channel.name}} <span v-if="channelId=='group'">（{{users.length}}）</span>  </div>
+                        <div class="ui-channel-header">{{channel.name}} <span v-if="channelId=='group'" title="当前在线">（{{users.length}}）</span>  </div>
                         <div class="ui-messages-content">
                             <div class="ui-message-list ui-scroll" ref="list">
-                                <div class="ui-thread-item" v-for="item in messages" :class="{'ui-thread-right':item.from.id==loginUser.id}">
+                                <div class="ui-thread-item" v-for="item in messages" :class="{'ui-thread-right':item.from.uid==loginUser.uid}">
                                     <div class="ui-thread-avatar">
                                         <img :src="item.from.avatarUrl" alt="">
                                     </div>
