@@ -163,7 +163,7 @@ function addCssByLink(url) {
             }
         });
 
-        addCssByLink(pUrl + 'static/css/embed.css?ver=20190826');
+        addCssByLink(pUrl + 'static/css/embed.css?ver=201908061530');
         // addCssByLink('/static/css/embed.css');
 
         var readyCallBacks = [];
