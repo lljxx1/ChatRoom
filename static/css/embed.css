@@ -1,11 +1,9 @@
 .btn-chat-rooom{
-    opacity: 0.7;
+    opacity: 1;
     transition: 0.3s;
     bottom: -8px;
 }
 
-
-
 .btn-chat-rooom:hover {
-    opacity: 1;
+    background-color: rgb(15, 118, 187)
 }
