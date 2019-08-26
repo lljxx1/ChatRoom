@@ -165,9 +165,10 @@ function addCssByLink(url) {
             updateunRead();
         }
 
+        
         function loginSuccess(msg) {
             label.style = "display:block";
-            div.style = "position: fixed; top: 0px; height: 100%; width: 530px; right:-530px; z-index: 2000000013;";
+            div.style = "position: fixed; top: 0px; box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 8px; height: 100%; width: 530px; right:-530px; z-index: 2000000013;";
             div.style.display = "block";
             console.log('loginSuccess', msg)
             updateCount(msg.count + 1);
