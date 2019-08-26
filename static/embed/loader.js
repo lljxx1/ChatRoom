@@ -50,6 +50,7 @@ function addCssByLink(url) {
 
         var div = document.createElement('div');
         var pUrl = "https://im.adbug.cn/";
+        // var pUrl = "http://localhost:3000/";
 
         div.innerHTML = '<iframe marginheight="0" style="border: 0px; visibility: visible; width: 100%; height: 100%; margin: 0px; padding: 0px;" marginwidth="0" frameborder="0" allowtransparency="true"  src="' + pUrl + '"></iframe>';
         div.style.display = "none";
@@ -57,12 +58,14 @@ function addCssByLink(url) {
         document.body.appendChild(div);
 
         var label = document.createElement('div');
+        var notifyElStr = '<span id="im-unread-count" style="display:none">0</span>';
 
         var useStatusHtml = '<div class="im-user-block"><img src ="http://file.adbug.cn/icon/default.png" height="22" class="im-user-avatar"/><div class="presence-indicator--is-online"></div></div>'
 
-        label.innerHTML = '<div class="btn-chat-rooom" style="box-shadow: 0 2px 6px 0 rgba(0,0,0,.4);cursor: pointer;background-color: rgb(63, 139, 190);color:white; width:65px;position:fixed; height: 50px; bottom: -6px;right: 50px;display: block;">'+
+        label.innerHTML = '<div class="btn-chat-rooom" style="box-shadow: 0 2px 6px 0 rgba(0,0,0,.4);cursor: pointer;background-color: rgb(63, 139, 190);color:white; position:fixed; height: 50px; bottom: -6px;right: 50px;display: block;">'+
         useStatusHtml + 
-        buttonName + '<span style="" id="chat-im-online">(2)</span></div>';
+        buttonName + '<span style="" id="chat-im-online">(2)</span>'+notifyElStr+'</div>';
+
 
         document.body.appendChild(label);
         label.style = "display:none";
@@ -70,6 +73,7 @@ function addCssByLink(url) {
         var isOpend = false;
 
         var frame = div.getElementsByTagName('iframe')[0];
+        var notifyEl = document.getElementById('im-unread-count');
 
         label.addEventListener('click', function () {
             console.log('toggel');
@@ -107,7 +111,19 @@ function addCssByLink(url) {
 
             setTimeout(function () {
                 isOpend = true;
+                unReadCount = 0;
+                updateunRead();
             }, 1000);
+        }
+
+
+        function updateunRead(){
+            if(unReadCount > 0){
+                notifyEl.innerText = unReadCount;
+                notifyEl.style.display = 'inline-block';
+            }else{
+                notifyEl.style.display = 'none';
+            }
         }
 
         function closePannelAni() {
@@ -145,11 +161,13 @@ function addCssByLink(url) {
 
         function reciveChatMessage(msg){
             console.log('reciveChatMessage', msg)
+            unReadCount++;
+            updateunRead();
         }
 
         function loginSuccess(msg) {
             label.style = "display:block";
-            div.style = "position: fixed; top: 0px; height: 969px; width: 530px; right:-530px; z-index: 2000000013;";
+            div.style = "position: fixed; top: 0px; height: 100%; width: 530px; right:-530px; z-index: 2000000013;";
             div.style.display = "block";
             console.log('loginSuccess', msg)
             updateCount(msg.count + 1);
@@ -173,7 +191,6 @@ function addCssByLink(url) {
         });
 
         addCssByLink(pUrl + 'static/css/embed.css?ver=201908061533');
-        // addCssByLink('/static/css/embed.css');
 
         var readyCallBacks = [];
         function sendMessage(msg) {
