@@ -74,7 +74,6 @@ function addCssByLink(url) {
         })
 
         function slideOut(target, data) {
-            console.log('slideOut', data.right);
             target.style.right = data.right + 'px';
         };
 
@@ -152,7 +151,6 @@ function addCssByLink(url) {
         }
 
         document.body.addEventListener('click', function (event) {
-            console.log(event);
             if (isOpend) {
                 closePannel();
             }
