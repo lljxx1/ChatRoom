@@ -110,12 +110,15 @@ function addCssByLink(url) {
             });
         }
 
+
+        var isReady = false;
+
         function whenFrameReady() {
+            isReady = true;
             for (var k in readyCallBacks) {
                 readyCallBacks[k]();
             }
         }
-
 
         var countLabel = document.getElementById('chat-im-online');
 
@@ -138,7 +141,6 @@ function addCssByLink(url) {
         }
 
         function usersChange(msg) {
-            console.log("usersChange", msg);
             updateCount(msg.count);
         }
 
@@ -158,7 +160,11 @@ function addCssByLink(url) {
 
         return {
             ready: function (cb) {
-                readyCallBacks.push(cb);
+                if(!isReady){
+                    readyCallBacks.push(cb);
+                }else{
+                    cb();
+                }
             },
             login: function (user) {
                 var msg = Object.assign({
