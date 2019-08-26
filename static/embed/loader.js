@@ -53,7 +53,7 @@ function addCssByLink(url) {
         document.body.appendChild(div);
 
         var label = document.createElement('div');
-        label.innerHTML = '<div class="btn-chat-rooom" style="border-radius: .3125rem;box-shadow: 0 2px 6px 0 rgba(0,0,0,.4);cursor: pointer; text-align:center; background-color: rgb(63, 139, 190);color:white; width:65px;position:fixed; width: 182px;height: 50px; line-height: 50px;bottom: -6px;right: 50px;display: block;">' + buttonName + '<span style="" id="chat-im-online">(2)</span></div>'
+        label.innerHTML = '<div class="btn-chat-rooom" style="box-shadow: 0 2px 6px 0 rgba(0,0,0,.4);cursor: pointer; text-align:center; background-color: rgb(63, 139, 190);color:white; width:65px;position:fixed; width: 182px;height: 50px; line-height: 50px;bottom: -6px;right: 50px;display: block;">' + buttonName + '<span style="" id="chat-im-online">(2)</span></div>'
         document.body.appendChild(label);
         label.style = "display:none";
 
