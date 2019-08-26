@@ -54,6 +54,11 @@
                     <div class="ui-messages-box">
                         <div class="ui-channel-header">{{channel.name}} <span v-if="channelId=='group'" title="当前在线">（{{users.length}}）</span>  </div>
                         <div class="ui-messages-content">
+                            <p v-if="disconnected" style="
+                            text-align: center;
+                            font-size: 13px;
+                            color: #e02d2d;
+                        ">服务器已断开...重连中</p>
                             <div class="ui-message-list ui-scroll" ref="list">
                                 <div class="ui-thread-item" v-for="item in messages" :class="{'ui-thread-right':item.from.uid==loginUser.uid}">
                                     <div class="ui-thread-avatar">

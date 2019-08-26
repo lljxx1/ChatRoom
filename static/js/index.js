@@ -188,9 +188,17 @@
   } else {
     window.uiExpression = uiExpression;
   }
-})()
+})();
+
+
 //创建socket链接
-var socket = io.connect();
+var socket = io.connect({
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax : 5000,
+  reconnectionAttempts: Infinity
+});
+
 //登录组件
 Vue.component("ui-login", {
   template: "#imLogin",
@@ -266,6 +274,7 @@ Vue.component("ui-login", {
     }
   }
 })
+
 new Vue({
   el: "#webChatBox",
   template: "#webChat",
@@ -274,10 +283,11 @@ new Vue({
       //登录用户信息
       loginUser: {
         id: "u001",
-        avatarUrl: "http://q.qlogo.cn/headimg_dl?dst_uin=705597001&spec=100",
-        name: "似水流年",
+        avatarUrl: "",
+        name: "",
         type: "user"
       },
+      disconnected: false,
       //设置tab选项
       tab: "chat",
       //在线会话用户列表
@@ -329,10 +339,24 @@ new Vue({
     }
   },
   created: function () {
-    //初始化自动更换页面背景，背景图来源于Bing
-    // this.initBg();
 
     var self = this;
+    socket.on('connect', function(msg){
+      if(self.isLogin){
+        socket.emit("login", {
+          name: self.loginUser.name,
+          uid: self.loginUser.uid,
+          avatarUrl:  self.loginUser.avatarUrl
+        })
+        self.disconnected = false;
+      }
+      console.log('onconnect', msg);
+    });
+
+    socket.on("disconnect", function(){
+      self.disconnected = true;
+      console.log("client disconnected from server");
+    });
 
     function receiveMessage(event){
       var data = null; 

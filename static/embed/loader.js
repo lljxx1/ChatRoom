@@ -49,8 +49,8 @@ function addCssByLink(url) {
         window.addEventListener("message", receiveMessage, false);
 
         var div = document.createElement('div');
-        var pUrl = "https://im.adbug.cn/";
-        // var pUrl = "http://localhost:3000/";
+        // var pUrl = "https://im.adbug.cn/";
+        var pUrl = "http://localhost:3000/";
 
         div.innerHTML = '<iframe marginheight="0" style="border: 0px; visibility: visible; width: 100%; height: 100%; margin: 0px; padding: 0px;" marginwidth="0" frameborder="0" allowtransparency="true"  src="' + pUrl + '"></iframe>';
         div.style.display = "none";
@@ -174,11 +174,12 @@ function addCssByLink(url) {
             updateunRead();
         }
 
-
         function loginSuccess(msg) {
-            label.style = "display:block";
-            div.style = "position: fixed; top: 0px; box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 8px; height: 100%; width: 530px; right:-530px; z-index: 2000000013;";
-            div.style.display = "block";
+            if(!isOpend){
+                label.style = "display:block";
+                div.style = "position: fixed; top: 0px; box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 8px; height: 100%; width: 530px; right:-530px; z-index: 2000000013;";
+                div.style.display = "block";
+            }
             console.log('loginSuccess', msg)
             updateCount(msg.count + 1);
         }

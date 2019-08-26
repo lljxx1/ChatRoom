@@ -111,7 +111,6 @@ io.sockets.on('connection', function (socket) {
       type: "receive",
       isRead: true
     });
-
   });
 
   //发送私信
@@ -124,12 +123,11 @@ io.sockets.on('connection', function (socket) {
       socket.broadcast.emit('system', from, 'join');
       socket.emit('loginSuccess', from, []);
     }
-
     console.log(msg, from, id);
     socket.broadcast.to(id).emit('message', socket.user, msg);
   });
-
 });
+
 //启动服务器
 server.listen(3000, function () {
   console.log("服务器已启动在：3000端口", "http://localhost:3000")
