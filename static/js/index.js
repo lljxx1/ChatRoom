@@ -435,7 +435,10 @@ new Vue({
       if (this.setting.isVoice && channelId != "group") {
         this.$refs.audio.play();
       }
-      this.sendMessageToParent(message);
+      this.sendMessageToParent({
+        method: 'reciveChatMessage',
+        msg: message
+      });
     },
     //添加消息
     addMessage: function (message) {
