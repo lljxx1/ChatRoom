@@ -73,6 +73,7 @@ function addCssByLink(url) {
         })
 
         function slideOut(target, data) {
+            console.log('slideOut', data.right);
             target.style.right = data.right;
         };
 
