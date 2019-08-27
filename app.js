@@ -1,19 +1,19 @@
-const express = require('express'),
-	app = express(),
-	server = require('http').createServer(app),
-	io = require('socket.io').listen(server);
+
 
 const fs = require('fs');
+const express = require('express');
+var cluster = require('cluster');
+var sticky = require('sticky-session');
 
-app.use('/static', express.static(__dirname + '/static'));
-app.get("/", (req, res) => {
-	let path = __dirname + '/static/index.html';
-	res.sendFile(path);
-});
-
+var redisPort = 6375;
+var redisHost = '127.0.0.1';
+var maxSaveLimit = 30;
 
 function GroupChat(channel, group) {
 
+	var Redis = require("ioredis");
+	var redisCli = new Redis(redisPort, redisHost);
+	
 	var allGroups = [
 		{
 			id: "wf5mfgmui7grb546",
@@ -28,22 +28,13 @@ function GroupChat(channel, group) {
 			type: "group"
 		}
 	];
-	
-	var groupData = {};
-	var groupRecentMessages = {};
-	var cacheFile = './cache.json';
-
-	if(fs.existsSync(cacheFile)){
-		groupRecentMessages = JSON.parse(fs.readFileSync(cacheFile, 'utf-8'));
-	}
 
 	var totalOnline = 0;
 
 	channel.on('connection', function (socket) {
 		totalOnline++;
 
-		console.log('totalOnline', totalOnline);
-
+		console.log('totalOnline', totalOnline, cluster.worker.id);
 		var userGroups = [];
 
 		//创建用户链接
@@ -53,44 +44,56 @@ function GroupChat(channel, group) {
 			socket.user = user;
 
 			userGroups = [].concat(allGroups);
-			if(user.role != 'vip'){
+			if (user.role != 'vip') {
 				userGroups.shift();
 			}
 
-			userGroups.forEach((allGroup) => {
-				groupData[allGroup.id] = groupData[allGroup.id] || {};
-				groupData[allGroup.id][uid] = socket.id;
+			(async () => {
 
-				socket.join(allGroup.id);
-				var groupUserCount =  Object.keys(groupData[allGroup.id]).length;
-				allGroup.online = groupUserCount;
-				socket.broadcast.to(allGroup.id).emit('system', user, 'join', allGroup.id, groupUserCount);
-			});
+				for (let index = 0; index < userGroups.length; index++) {
+					const allGroup = userGroups[index];
+					socket.join(allGroup.id);
+					var RoomUserSet = 'room_'+allGroup.id+'_users';
+					var cmdRes = await redisCli.pipeline().sadd(RoomUserSet, uid).scard(RoomUserSet).exec();
+					var groupUserCount = cmdRes[1][1];
+					// console.log('groupUserCount', groupUserCount);
+					allGroup.online = groupUserCount;
+					socket.broadcast.to(allGroup.id).emit('system', user, 'join', allGroup.id, groupUserCount);
+				}
 
-			var returnData = [].concat(userGroups);
-			returnData.forEach((g) => {
-				g.recentMessages = groupRecentMessages[g.id] || [];
-			})
+				var returnData = [].concat(userGroups);
+	
+				for (let rIndex = 0; rIndex < returnData.length; rIndex++) {
+					const g = returnData[rIndex];
+					var RoomUserSet = 'room_'+g.id+'_recentmsg';
+					var recentMessages = await redisCli.pipeline().lrange(RoomUserSet, 0, -1).exec();
+					var msgs = recentMessages[0][1].reverse();
+					g.recentMessages = msgs.map((a) => JSON.parse(a));
+				}
+				
+				socket.emit('loginSuccess', user, [], returnData, returnData[0].online);
+			})();
 
-			socket.emit('loginSuccess', user, [], returnData, returnData[0].online);
 		});
 
 		//用户注销链接
 		socket.on('disconnect', () => {
-
 			totalOnline--;
-			console.log('totalOnline', totalOnline);
-
-			if(socket.user == null){
+			console.log('totalOnline', totalOnline, cluster.worker.id);
+			if (socket.user == null) {
 				return;
 			}
-			
+
 			userGroups.forEach((allGroup) => {
-				if(groupData[allGroup.id]) {
-					delete groupData[allGroup.id][socket.user.uid];
-				}
-				socket.broadcast.to(allGroup.id)
-					.emit('system', socket.user, 'logout', allGroup.id, Object.keys(groupData[allGroup.id]).length);
+				(async () => {
+					var totalAlive = 0;
+					var RoomUserSet = 'room_'+allGroup.id+'_users';
+					var cmdRes = await redisCli.pipeline().srem(RoomUserSet, socket.user.uid).scard(RoomUserSet).exec();
+					totalAlive = cmdRes[1][1];
+					console.log(cmdRes);
+					socket.broadcast.to(allGroup.id)
+						.emit('system', socket.user, 'logout', allGroup.id, totalAlive);
+				})();
 			});
 		});
 
@@ -98,43 +101,56 @@ function GroupChat(channel, group) {
 		socket.on('message', function (to, msg, from) {
 			// groupRecentMessages[]
 			socket.broadcast.to(to).emit('message', to, socket.user, msg);
-			groupRecentMessages[to] = groupRecentMessages[to] || [];
-
-			var recentMessages = groupRecentMessages[to];
-			if(recentMessages.length > 16){
-				recentMessages.shift();
-			}
-			recentMessages.push({
+			var message = {
 				threadId: to,
 				from: from,
 				content: msg,
 				time: new Date().getTime(),
 				type: "receive",
 				isRead: true
-			  });
+			};
+
+			(async () => {
+				var RoomMSgSet = 'room_'+to+'_recentmsg';
+				await redisCli.pipeline()
+					.lpush(RoomMSgSet, JSON.stringify(message))
+					.ltrim(RoomMSgSet, 0, maxSaveLimit)
+					.exec();
+			})();
 		});
 	});
-
-	setInterval(() => {
-		try{
-			fs.writeFileSync(cacheFile, JSON.stringify(groupRecentMessages));
-		}catch(e){}
-		// groupRecentMessages
-	}, 60 * 1000);
-	// groupRecentMessages
 }
 
-var channels = [{
-	channel: '/channel',
-	title: 'all'
-}];
 
-channels.forEach(function(group){
-	let channel = io.of(group.channel);;
-	new GroupChat(channel, group);
-});
+var http = require('http');
+const app = express();
+var server = http.createServer(app);
 
-//启动服务器
-server.listen(3000, function () {
-	console.log("服务器已启动在：3000端口", "http://localhost:3000")
-});
+if (!sticky.listen(server, 3000)) {
+	// Master code
+	server.once('listening', function() {
+	  console.log('server started on 3000 port');
+	});
+} else {	
+	console.log('worker', cluster.worker.id)
+	// Worker code
+	app.use('/static', express.static(__dirname + '/static'));
+	app.get("/", (req, res) => {
+		let path = __dirname + '/static/index.html';
+		res.sendFile(path);
+	});
+	
+	var redis = require('socket.io-redis');
+	const io = require('socket.io').listen(server);
+	io.adapter(redis({ host: 'localhost', port: redisPort }));
+
+	var channels = [{
+		channel: '/channel',
+		title: 'all'
+	}];
+
+	channels.forEach(function (group) {
+		let channel = io.of(group.channel);;
+		new GroupChat(channel, group);
+	});
+}

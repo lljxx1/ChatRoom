@@ -1,22 +1,25 @@
 {
-    "name": "Chat-room",
-    "version": "1.0.0",
-    "description": "a chat room app by socket.io",
-    "main": "app.js",
-    "dependencies": {
-        "express": "^4.15.3",
-        "socket.io": "^2.0.1"
-    },
-    "devDependencies": {},
-    "scripts": {
-        "dev": "node app.js"
-    },
-    "keywords": [
-        "imChat",
-        "socket",
-        "express",
-        "vue"
-    ],
-    "author": "@cleverqin",
-    "license": "MIT"
+  "name": "Chat-room",
+  "version": "1.0.0",
+  "description": "a chat room app by socket.io",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.15.3",
+    "ioredis": "^4.14.0",
+    "socket.io": "^2.0.1",
+    "socket.io-redis": "^5.2.0",
+    "socketio-sticky-session": "^0.4.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "node app.js"
+  },
+  "keywords": [
+    "imChat",
+    "socket",
+    "express",
+    "vue"
+  ],
+  "author": "@cleverqin",
+  "license": "MIT"
 }
