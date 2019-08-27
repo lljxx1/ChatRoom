@@ -210,7 +210,7 @@ function addCssByLink(url) {
         }
 
         
-        // countLabel.style.display = 'none';
+        countLabel.style.display = 'none';
 
         var intied = false;
 
