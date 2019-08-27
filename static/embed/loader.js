@@ -49,10 +49,10 @@ function addCssByLink(url) {
         window.addEventListener("message", receiveMessage, false);
 
         var div = document.createElement('div');
-        var pUrl = "https://im.adbug.cn/";
+        var pUrl = "https://im.adbug.cn/?v=20190827";
         // var pUrl = "http://localhost:3000/";
 
-        div.innerHTML = '<iframe marginheight="0" style="border: 0px; visibility: visible; width: 100%; height: 100%; margin: 0px; padding: 0px;" marginwidth="0" frameborder="0" allowtransparency="true"  src="' + pUrl + '"></iframe>';
+        div.innerHTML = '<iframe marginheight="0" style="border: 0px; visibility: visible; width: 100%; height: 100%; margin: 0px; padding: 0px;" marginwidth="0" frameborder="0" allowtransparency="true"  ></iframe>';
         div.style.display = "none";
 
         document.body.appendChild(div);
@@ -81,7 +81,6 @@ function addCssByLink(url) {
                 div.style.display = "block";
                 showPannel();
                 label.style = "display: none";
-
             } else {
                 isOpend = false;
             }
@@ -170,7 +169,7 @@ function addCssByLink(url) {
 
         function reciveChatMessage(msg){
             console.log('reciveChatMessage', msg)
-            unReadCount++;
+            if(!isOpend) unReadCount++;
             updateunRead();
         }
 
@@ -181,13 +180,15 @@ function addCssByLink(url) {
                 div.style.display = "block";
             }
             console.log('loginSuccess', msg)
-            updateCount(msg.count + 1);
+            updateCount(msg.count);
         }
 
         function closePannel() {
             label.style = "display:block";
-            isOpend = false;
             closePannelAni();
+            setTimeout(function(){
+                isOpend = false;
+            }, 1000);
             console.log('closePannel')
         }
 
@@ -201,14 +202,21 @@ function addCssByLink(url) {
             }
         });
 
-        addCssByLink(pUrl + 'static/css/embed.css?ver=201908061610');
+        addCssByLink(pUrl + 'static/css/embed.css?ver=2019082716');
 
         var readyCallBacks = [];
         function sendMessage(msg) {
             frame.contentWindow.postMessage(JSON.stringify(msg), "*");
         }
 
+        frame.src = pUrl;
+        // countLabel.style.display = 'none';
+
         return {
+            init: function(conf){
+                // frame.src = pUrl+"?channel="+conf.channel;
+            },
+
             ready: function (cb) {
                 if(!isReady){
                     readyCallBacks.push(cb);
@@ -223,8 +231,9 @@ function addCssByLink(url) {
                 sendMessage(msg);
             },
 
-            loginAsGuest: function(){
+            loginAsGuest: function(force){
                 var cachedUserInfo = window.localStorage.getItem('im_guest');
+                if(force) cachedUserInfo = null;
                 if(!cachedUserInfo){
                     var ramdonId = Math.floor(Math.random() * 100000000);
                     var uid = 'guest'+ ramdonId;
