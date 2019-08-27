@@ -220,12 +220,10 @@ function addCssByLink(url) {
             },
 
             ready: function (cb) {
-
                 if(!intied){
                     frame.src = pUrl+'?v=20190827';
                     intied = true;
                 }
-
                 if(!isReady){
                     readyCallBacks.push(cb);
                 }else{
