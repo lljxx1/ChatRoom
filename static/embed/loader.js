@@ -209,8 +209,10 @@ function addCssByLink(url) {
             frame.contentWindow.postMessage(JSON.stringify(msg), "*");
         }
 
-        frame.src = pUrl+'?v=20190827';
+        
         // countLabel.style.display = 'none';
+
+        var intied = false;
 
         return {
             init: function(conf){
@@ -218,6 +220,12 @@ function addCssByLink(url) {
             },
 
             ready: function (cb) {
+
+                if(!intied){
+                    frame.src = pUrl+'?v=20190827';
+                    intied = true;
+                }
+
                 if(!isReady){
                     readyCallBacks.push(cb);
                 }else{

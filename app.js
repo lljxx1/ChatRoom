@@ -37,8 +37,13 @@ function GroupChat(channel, group) {
 		groupRecentMessages = JSON.parse(fs.readFileSync(cacheFile, 'utf-8'));
 	}
 
+	var totalOnline = 0;
+
 	channel.on('connection', function (socket) {
-		console.log('new connection', group);
+		totalOnline++;
+
+		console.log('totalOnline', totalOnline);
+
 		var userGroups = [];
 
 		//创建用户链接
@@ -72,9 +77,14 @@ function GroupChat(channel, group) {
 
 		//用户注销链接
 		socket.on('disconnect', () => {
+
+			totalOnline--;
+			console.log('totalOnline', totalOnline);
+
 			if(socket.user == null){
 				return;
 			}
+			
 			userGroups.forEach((allGroup) => {
 				if(groupData[allGroup.id]) {
 					delete groupData[allGroup.id][socket.user.uid];
@@ -115,7 +125,7 @@ function GroupChat(channel, group) {
 }
 
 var channels = [{
-	channel: '/',
+	channel: '/channel',
 	title: 'all'
 }];
 

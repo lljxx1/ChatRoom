@@ -278,7 +278,7 @@ function getUrlParameter(name) {
 var type = getUrlParameter('channel');
 
 //创建socket链接
-var socket = io.connect('/'+type, {
+var socket = io.connect('/channel', {
 	upgrade: false,
 	transports: ['websocket'],
 	reconnection: true,
@@ -401,12 +401,13 @@ window.mainApp = new Vue({
                     })
                     
 					socket.on("loginSuccess", function (user, users, groups, totalUsers) {
+						console.log('loginSuccess');
                         self.channelId = groups[0].id; 
-                        self.users = groups;
+						self.users = groups;
+						console.log('groups', groups.length);
                         groups.forEach(function(group){
                             console.log('group', group);
                             self.groupUsers[group.id] = group.online;
-
                             group.recentMessages.forEach(function (recentMessage) {
                                 if (recentMessage.from.uid == user.uid) {
                                     recentMessage.type = "send";
