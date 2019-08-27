@@ -6,6 +6,7 @@
     position: relative;
     /* width: 100px; */
     width: auto;
+    min-width: 75px;
     padding-left: 60px;
     padding-right: 26px;
     font-size: 15px;
