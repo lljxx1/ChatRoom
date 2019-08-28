@@ -24,7 +24,7 @@ function GroupChat(channel, group) {
 		{
 			id: "4j2e8xk1uimg1gir",
 			avatarUrl: "/static/images/group-icon.png",
-			name: '普通用户交流',
+			name: '用户交流',
 			type: "group"
 		}
 	];
