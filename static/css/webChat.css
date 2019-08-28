@@ -35,8 +35,16 @@
     color: #8c8c8c;
 }
 .ui-thread-info span{
-    margin: 0 10px;
+    /* margin: 0 10px;\ */
+    margin-left: 5px;
 }
+
+.ui-thread-info img {
+    margin: 0;
+    vertical-align: -3px;
+    margin-left: 3px;
+}
+
 .ui-thread-body{
     float: left;
     position: relative;

@@ -276,9 +276,10 @@ function getUrlParameter(name) {
 }
 
 var type = getUrlParameter('channel');
+var host = 'https://im.adbug.cn';
 
 //创建socket链接
-var socket = io.connect('/channel', {
+var socket = io.connect(host+'/channel', {
 	upgrade: false,
 	transports: ['websocket'],
 	reconnection: true,

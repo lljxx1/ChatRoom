@@ -8,6 +8,8 @@ var sticky = require('sticky-session');
 var redisPort = 6375;
 var redisHost = '127.0.0.1';
 var maxSaveLimit = 30;
+var isDebug = true;
+isDebug = false;
 
 function GroupChat(channel, group) {
 
@@ -142,7 +144,10 @@ if (!sticky.listen(server, 3000)) {
 	
 	var redis = require('socket.io-redis');
 	const io = require('socket.io').listen(server);
-	io.adapter(redis({ host: 'localhost', port: redisPort }));
+	
+	if(!isDebug) {
+		io.adapter(redis({ host: 'localhost', port: redisPort }));
+	}
 
 	var channels = [{
 		channel: '/channel',

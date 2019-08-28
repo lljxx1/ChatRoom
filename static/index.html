@@ -66,7 +66,13 @@
                                     </div>
                                     <div class="ui-thread-content">
                                         <div class="ui-thread-info" v-if="item.type=='send'" v-show="setting.isShowName"><span v-show="setting.isShowTime">{{item.time | time}}</span>{{item.from.name}}</div>
-                                        <div class="ui-thread-info" v-if="item.type=='receive'" v-show="setting.isShowName">{{item.from.name}}<span v-show="setting.isShowTime">{{item.time | time}}</span></div>
+                                        <div class="ui-thread-info" v-if="item.type=='receive'" v-show="setting.isShowName">
+                                            <a>{{ item.from.name }}</a>
+                                            <a href="https://www.adbug.cn/introduction?from=chatroomvip" target="_blank" v-if="item.from.role=='vip'"><img src="/static/images/vip.png" style="width: 18px;"/></a>
+                                            <span v-show="setting.isShowTime">
+                                                {{item.time | time}}
+                                            </span>
+                                        </div>
                                         <div class="ui-thread-body" v-html="$parseExpression(item.content)"></div>
                                     </div>
                                 </div>
@@ -154,6 +160,7 @@
 </script>
 <script src="/static/js/vue.min.2.2.0.js"></script>
 <script src="/static/js/vue-resource.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-avatar-cropper@1.0.5/dist/index.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/index.js"></script>
 </body>
