@@ -43,7 +43,7 @@
                             <div class="ui-user-item" v-for="item in searchUser()" :class="{active:item.id==channelId}" @click="changeChannel(item.id)">
                                 <img :src="item.avatarUrl" alt="">
                                 <div class="ui-infoBox">
-                                    <span class="ui-infoTime" v-if="getLastMsg(item.id).time" v-show="setting.isShowTime">{{getLastMsg(item.id).time| time}}</span>
+                                    <!-- <span class="ui-infoTime" v-if="getLastMsg(item.id).time" v-show="setting.isShowTime">{{getLastMsg(item.id).time| time}}</span> -->
                                     <span class="ui-unReader-info" v-if="getUnReaderNum(item.id)>0">{{getUnReaderNum(item.id)}}</span>
                                     <div class="ui-name">{{item.name}}</div>
                                     <div class="ui-txt">{{getLastMsg(item.id).content}}</div>
