@@ -60,7 +60,7 @@ function addCssByLink(url) {
         var label = document.createElement('div');
         var notifyElStr = '<span id="im-unread-count" style="display:none">0</span>';
 
-        var useStatusHtml = '<div class="im-user-block"><img src ="http://file.adbug.cn/icon/default.png" height="22" class="im-user-avatar"/><div class="presence-indicator--is-online"></div></div>'
+        var useStatusHtml = '<div class="im-user-block"><img src ="http://file.adbug.cn/icon/default.png" height="22" class="im-user-avatar" id="im-user-avatar-main"/><div class="presence-indicator--is-online"></div></div>'
 
         label.innerHTML = '<div class="btn-chat-rooom" style="box-shadow: 0 2px 6px 0 rgba(0,0,0,.4);cursor: pointer;background-color: rgb(63, 139, 190);color:white; position:fixed; height: 50px; bottom: -6px;right: 50px;display: block;">'+
         useStatusHtml + 
@@ -74,6 +74,7 @@ function addCssByLink(url) {
 
         var frame = div.getElementsByTagName('iframe')[0];
         var notifyEl = document.getElementById('im-unread-count');
+        var avatarEl = document.getElementById('im-user-avatar-main');
 
         label.addEventListener('click', function () {
             console.log('toggel');
@@ -234,6 +235,9 @@ function addCssByLink(url) {
                 var msg = Object.assign({
                     'method': 'login',
                 }, user);
+                if(msg.avatarUrl){
+                    avatarEl.src = msg.avatarUrl;
+                }
                 sendMessage(msg);
             },
 
