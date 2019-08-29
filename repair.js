@@ -14,7 +14,7 @@ var redisCli = new Redis(redisPort, redisHost);
         d.from.role = 'vip';
         d.from.avatarUrl = 'http://adbugsns.oss-cn-hangzhou.aliyuncs.com/headFile/201908/201908281817145d6654aa007a2.jpg';
         d.from.uid = 20;
+        redisCli.pipeline().lset('room_wf5mfgmui7grb546_recentmsg', 1, JSON.stringify(d));
     }
 
-    redisCli.pipeline().lset('room_wf5mfgmui7grb546_recentmsg', 1, JSON.stringify(d));
 })();;
