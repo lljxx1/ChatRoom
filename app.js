@@ -46,20 +46,24 @@ function GroupChat(channel, group) {
 			var uid = user.uid;
 			socket.user = user;
 
-			userGroups = [].concat(allGroups);
+			var nowUserGroups = [];
+
+			nowUserGroups = [].concat(allGroups);
 			if (user.role != 'vip') {
-				var disableGroup = userGroups.shift();
+				var disableGroup = nowUserGroups.shift();
 				disableGroup.lock = true;
-				userGroups.push(disableGroup);
+				nowUserGroups.push(disableGroup);
 				console.log('disable vip', user.role);
 			}else{
 				// userGroups[0].lock = false;
 			}
 
+			userGroups =  [].concat(nowUserGroups);
+
 			(async () => {
 
-				for (let index = 0; index < userGroups.length; index++) {
-					const allGroup = userGroups[index];
+				for (let index = 0; index < nowUserGroups.length; index++) {
+					const allGroup = nowUserGroups[index];
 					if(allGroup.lock) continue;
 
 					socket.join(allGroup.id);
@@ -71,7 +75,7 @@ function GroupChat(channel, group) {
 					socket.broadcast.to(allGroup.id).emit('system', user, 'join', allGroup.id, groupUserCount);
 				}
 
-				var returnData = [].concat(userGroups);
+				var returnData = [].concat(nowUserGroups);
 	
 				for (let rIndex = 0; rIndex < returnData.length; rIndex++) {
 					const g = returnData[rIndex];
