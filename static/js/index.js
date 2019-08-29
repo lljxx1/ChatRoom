@@ -576,7 +576,7 @@ window.mainApp = new Vue({
 		//切换频道
 		changeChannel: function (channelId, change) {
 			if(change.lock){
-				alert('只有VIP才可查看');
+				// alert('只有VIP才可查看');
 				return;
 			};
 			var _this = this;
