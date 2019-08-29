@@ -12,7 +12,8 @@
     font-size: 15px;
     font-weight: bold;
     line-height: 45px;
-    z-index: 500;
+    /* z-index: 500; */
+    z-index: 20000;
 }
 
 .btn-chat-rooom:hover {
