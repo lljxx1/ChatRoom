@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="ui-thread-content">
                                         <div class="ui-thread-info" v-if="item.type=='send'" v-show="setting.isShowName"><span v-show="setting.isShowTime">{{item.time | time}}</span>{{item.from.name}}</div>
-                                        <div class="ui-thread-info" v-if="item.type=='receive'" v-show="setting.isShowName">
+                                        <div class="ui-thread-info" v-if="item.type=='receive'" v-show="setting.isShowName" :class="{ isVip: item.from.role=='vip' }">
                                             <a>{{ item.from.name }}</a>
                                             <a href="https://www.adbug.cn/introduction?from=chatroomvip" target="_blank" v-if="item.from.role=='vip'"><img src="/static/images/vip.png" style="width: 18px;"/></a>
                                             <span v-show="setting.isShowTime">
