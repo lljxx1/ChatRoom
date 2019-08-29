@@ -22,6 +22,7 @@ function GroupChat(channel, group) {
 			avatarUrl: "/static/images/group-icon.png",
 			name: 'VIP用户交流',
 			type: "group",
+			lock: false
 		},
 		{
 			id: "4j2e8xk1uimg1gir",
