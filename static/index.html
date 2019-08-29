@@ -46,7 +46,7 @@
                                     <!-- <span class="ui-infoTime" v-if="getLastMsg(item.id).time" v-show="setting.isShowTime">{{getLastMsg(item.id).time| time}}</span> -->
                                     <span class="ui-unReader-info" v-if="getUnReaderNum(item.id)>0">{{getUnReaderNum(item.id)}}</span>
                                     <div class="ui-name">{{item.name}}</div>
-                                    <div class="ui-txt" v-if="item.lock">你没有权限</div>
+                                    <div class="ui-txt" v-if="item.lock">没有权限</div>
                                     <div class="ui-txt" v-if="!item.lock">{{getLastMsg(item.id).content}}</div>
                                 </div>
                             </div>
