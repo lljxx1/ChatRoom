@@ -49,7 +49,7 @@ function GroupChat(channel, group) {
 			if (user.role != 'vip') {
 				// userGroups.shift();
 				userGroups[0].lock = true;
-				console.log('disable vip');
+				console.log('disable vip', user.role);
 			}
 
 			(async () => {
