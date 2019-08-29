@@ -826,3 +826,9 @@ body{
 body, textarea  {
     font-family: Arial,Microsoft YaHei UI,Helvetica Neue,Helvetica,sans-serif;
 }
+
+
+.ui-thread-info.isVip a{
+    font-weight: 600;
+    color: red
+}
