@@ -47,8 +47,8 @@ function GroupChat(channel, group) {
 
 			userGroups = [].concat(allGroups);
 			if (user.role != 'vip') {
-				// userGroups.shift();
-				userGroups[0].lock = true;
+				userGroups.shift();
+				// userGroups[0].lock = true;
 			}
 
 			(async () => {
