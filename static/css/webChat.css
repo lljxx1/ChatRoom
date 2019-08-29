@@ -138,7 +138,7 @@ body{
 /************用户列表及搜索样式表**************/
 .ui-users-box{
     float: left;
-    width: 180px;
+    width: 165px;
     height: 100%;
     position: relative;
     background: #ffffff;
@@ -274,7 +274,7 @@ body{
 }
 
 .side-open .ui-messages-box{
-    margin-left: 180px;
+    margin-left: 165px;
 }
 
 .side-open .ui-users-box {
