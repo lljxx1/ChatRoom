@@ -325,7 +325,7 @@ window.mainApp = new Vue({
 			channelId: "group",
 			//输入框的内容
 			text: "",
-			openSide: false,
+			openSide: true,
 			showUser: true,
 			groupUsers: {
 
@@ -574,7 +574,11 @@ window.mainApp = new Vue({
 			return arr;
 		},
 		//切换频道
-		changeChannel: function (channelId) {
+		changeChannel: function (channelId, change) {
+			if(change.lock){
+				alert('只有VIP才可查看');
+				return;
+			};
 			var _this = this;
 			this.channelId = channelId;
 			document.querySelector("title").innerHTML = _this.loginUser.name + " | 与" + this.channel.name + "聊天中";

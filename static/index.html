@@ -40,7 +40,7 @@
                             <input type="text" placeholder="搜索" v-model="keyWord">
                         </div>
                         <div class="ui-user-list ui-scroll">
-                            <div class="ui-user-item" v-for="item in searchUser()" :class="{active:item.id==channelId}" @click="changeChannel(item.id)">
+                            <div class="ui-user-item" v-for="item in searchUser()" :class="{active:item.id==channelId, lock: item.lock }" @click="changeChannel(item.id, item)">
                                 <img :src="item.avatarUrl" alt="">
                                 <div class="ui-infoBox">
                                     <!-- <span class="ui-infoTime" v-if="getLastMsg(item.id).time" v-show="setting.isShowTime">{{getLastMsg(item.id).time| time}}</span> -->

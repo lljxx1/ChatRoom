@@ -21,7 +21,7 @@ function GroupChat(channel, group) {
 			id: "wf5mfgmui7grb546",
 			avatarUrl: "/static/images/group-icon.png",
 			name: 'VIP用户交流',
-			type: "group"
+			type: "group",
 		},
 		{
 			id: "4j2e8xk1uimg1gir",
@@ -47,13 +47,16 @@ function GroupChat(channel, group) {
 
 			userGroups = [].concat(allGroups);
 			if (user.role != 'vip') {
-				userGroups.shift();
+				// userGroups.shift();
+				userGroups[0].lock = true;
 			}
 
 			(async () => {
 
 				for (let index = 0; index < userGroups.length; index++) {
 					const allGroup = userGroups[index];
+					if(allGroup.lock) continue;
+
 					socket.join(allGroup.id);
 					var RoomUserSet = 'room_'+allGroup.id+'_users';
 					var cmdRes = await redisCli.pipeline().sadd(RoomUserSet, uid).scard(RoomUserSet).exec();
@@ -67,6 +70,11 @@ function GroupChat(channel, group) {
 	
 				for (let rIndex = 0; rIndex < returnData.length; rIndex++) {
 					const g = returnData[rIndex];
+					if(g.lock) {
+						g.recentMessages = [];
+						continue;
+					};
+					
 					var RoomUserSet = 'room_'+g.id+'_recentmsg';
 					var recentMessages = await redisCli.pipeline().lrange(RoomUserSet, 0, -1).exec();
 					var msgs = recentMessages[0][1].reverse();
