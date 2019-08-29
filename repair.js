@@ -6,7 +6,7 @@ var redisCli = new Redis(redisPort, redisHost);
 
 (async () => {
 
-    var msg = redisCli.pipeline().lindex('room_wf5mfgmui7grb546_recentmsg', 1).exec();
+    var msg = await redisCli.pipeline().lindex('room_wf5mfgmui7grb546_recentmsg', 1).exec();
     console.log(msg);
     
 })();;
