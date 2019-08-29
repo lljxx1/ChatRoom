@@ -16,26 +16,28 @@ function GroupChat(channel, group) {
 	var Redis = require("ioredis");
 	var redisCli = new Redis(redisPort, redisHost);
 	
-	var allGroups = [
-		{
-			id: "wf5mfgmui7grb546",
-			avatarUrl: "/static/images/group-icon.png",
-			name: 'VIP用户交流',
-			type: "group",
-			lock: false
-		},
-		{
-			id: "4j2e8xk1uimg1gir",
-			avatarUrl: "/static/images/group-icon.png",
-			name: '用户交流',
-			type: "group"
-		}
-	];
-
+	
 	var totalOnline = 0;
 
 	channel.on('connection', function (socket) {
 		totalOnline++;
+
+		var allGroups = [
+			{
+				id: "wf5mfgmui7grb546",
+				avatarUrl: "/static/images/group-icon.png",
+				name: 'VIP用户交流',
+				type: "group",
+				lock: false
+			},
+			{
+				id: "4j2e8xk1uimg1gir",
+				avatarUrl: "/static/images/group-icon.png",
+				name: '用户交流',
+				type: "group"
+			}
+		];
+	
 
 		console.log('totalOnline', totalOnline, cluster.worker.id);
 		var userGroups = [];
