@@ -180,6 +180,11 @@ body{
     overflow-y: auto;
 }
 /********用户卡片样式*************/
+
+.ui-user-item.lock {
+    cursor: not-allowed;
+}
+
 .ui-user-item{
     padding: 10px;
     position:relative;
