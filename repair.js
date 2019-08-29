@@ -8,5 +8,9 @@ var redisCli = new Redis(redisPort, redisHost);
 
     var msg = await redisCli.pipeline().lindex('room_wf5mfgmui7grb546_recentmsg', 1).exec();
     console.log(msg);
+    var d = JSON.parse(msg);
+    if(d.from.name.indexOf('游客') > -1){
+        console.log(d);
+    }
     
 })();;
