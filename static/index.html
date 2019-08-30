@@ -232,10 +232,15 @@
         <el-container>
                 <el-container>
                     <el-aside width="60px">
-                        <img :src="user.avatarUrl" alt="" height="60">
-                        <div v-if="user.role =='vip'" style="background-color: #f14747!important;   font-weight: 600!important; color: #fff!important;text-align: center!important;">VIP</div>
+                        <div style="
+                            border-radius: 3px;
+                            overflow: hidden;
+                        ">
+                            <img :src="user.avatarUrl" alt="" height="60" style="display: block;">
+                            <div v-if="user.role =='vip'" style="background-color: #f14747!important;   font-weight: 600!important; color: #fff!important;text-align: center!important;">VIP</div>
+                        </div>
                     </el-aside>
-                    <el-main style="padding: 0 16px 0 16px"> 
+                    <el-main style="padding: 5px 16px 0 16px"> 
                         <div>
                             <a class="uname">{{ user.name }}</a>
                             <a class="user-org"> {{ user.company }}</a>
