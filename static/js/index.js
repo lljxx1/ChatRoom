@@ -434,6 +434,7 @@ window.mainApp = new Vue({
 			text: "",
 			openSide: true,
 			showUser: true,
+			isMsgSeted: false,
 			groupUsers: {
 
 			},
@@ -510,17 +511,20 @@ window.mainApp = new Vue({
 						console.log('loginSuccess');
                         self.channelId = groups[0].id; 
 						self.users = groups;
-                        groups.forEach(function(group){
-                            self.groupUsers[group.id] = group.online;
-                            group.recentMessages.forEach(function (recentMessage) {
-                                if (recentMessage.from.uid == user.uid) {
-                                    recentMessage.type = "send";
-                                }
-                                self.addMessage(recentMessage)
-                            })
-                        });
-                        
 
+						if(!self.isMsgSeted){
+							groups.forEach(function(group){
+								self.groupUsers[group.id] = group.online;
+								group.recentMessages.forEach(function (recentMessage) {
+									if (recentMessage.from.uid == user.uid) {
+										recentMessage.type = "send";
+									}
+									self.addMessage(recentMessage)
+								})
+							});
+							self.isMsgSeted = true;
+						}
+                       
 						window.parent.postMessage(JSON.stringify({
 							'loginSuccess': "yes",
                             'count': totalUsers,
