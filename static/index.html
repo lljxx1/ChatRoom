@@ -231,7 +231,7 @@
    <div class="user-pop-card">
         <el-container>
                 <el-container>
-                    <el-aside width="70px" style="padding-left: 10px;">
+                    <el-aside width="70px">
                         <img :src="user.avatarUrl" alt="" height="60">
                         <div v-if="user.role =='vip'" style="background-color: #f14747!important;   font-weight: 600!important; color: #fff!important;text-align: center!important;">VIP</div>
                     </el-aside>
@@ -250,7 +250,7 @@
                     </el-main>
                 </el-container>
         </el-container>
-        <el-container v-if="editable" style="margin-top:5px;padding-top: 10px; padding-left: 10px;">
+        <el-container v-if="editable" style="margin-top:5px;padding-top: 10px;">
             <el-button plain @click="editProfile">修改资料</el-button>
         </el-container>
    </div>
