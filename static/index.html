@@ -10,6 +10,8 @@
     <link rel="icon" sizes="any" mask href="/static/images/logo.png">
     <link rel="stylesheet" href="/static/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/webChat.css">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
 <!--应用挂着点-->
@@ -34,10 +36,42 @@
             </div>
             <div class="ui-webChat-content" >
                 <div class="ui-webChat-item ui-webChat-thread" v-show="tab=='chat'">
+                    <!-- <div class="top-bar">
+                        <div class="closeBtn" @click="closeSelf"></div>
+                    </div> -->
+
+                    <el-dialog
+                        title="修改资料"
+                        :visible.sync="dialogVisible"
+                        width="90%"
+                        :before-close="handleClose">
+                        <profile-editer :user="loginUser"><profile-editer>
+                        <!-- <span slot="footer" class="dialog-footer">
+                            <el-button @click="dialogVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                        </span> -->
+                    </el-dialog>
+
                     <div class="ui-users-box" v-if="showUser">
-                        <div class="ui-user-search">
-                            <span class="fa fa-search ui-icon-search"></span>
-                            <input type="text" placeholder="搜索" v-model="keyWord">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <el-dropdown>
+                                    <span class="el-dropdown-link">
+                                        <img :src="loginUser.avatarUrl" alt="" :title="loginUser.name">
+                                        <i class="el-icon-arrow-down el-icon--right"></i>
+                                    </span>
+                                    <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-item @click.native="dialogVisible = true;">
+                                            修改资料
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
+                                      
+                            </div>
+                            <div class="ui-user-search">
+                                <span class="fa fa-search ui-icon-search"></span>
+                                <input type="text" placeholder="" v-model="keyWord">
+                            </div>
                         </div>
                         <div class="ui-user-list ui-scroll">
                             <div class="ui-user-item" v-for="item in searchUser()" :class="{active:item.id==channelId, lock: item.lock }" @click="changeChannel(item.id, item)">
@@ -63,13 +97,27 @@
                             <div class="ui-message-list ui-scroll" ref="list">
                                 <div class="ui-thread-item" v-for="item in messages" :class="{'ui-thread-right':item.from.uid==loginUser.uid}">
                                     <div class="ui-thread-avatar">
-                                        <img :src="item.from.avatarUrl" alt="">
+                                        <el-popover
+                                            placement="top-start"
+                                            width="300"
+                                            trigger="hover">
+                                            <user-card :user="item.from"></user-card>
+                                            <img slot="reference" :src="item.from.avatarUrl" alt="">
+                                        </el-popover>
                                     </div>
                                     <div class="ui-thread-content">
                                         <div class="ui-thread-info" v-if="item.type=='send'" v-show="setting.isShowName"><span v-show="setting.isShowTime">{{item.time | time}}</span>{{item.from.name}}</div>
                                         <div class="ui-thread-info" v-if="item.type=='receive'" v-show="setting.isShowName" :class="{ isVip: item.from.role=='vip' }">
-                                            <a>{{ item.from.name }}</a>
-                                            <a href="https://www.adbug.cn/introduction?from=chatroomvip" target="_blank" v-if="item.from.role=='vip'"><img src="/static/images/vip.png" style="width: 18px;"/></a>
+                                            <el-popover
+                                                placement="top-start"
+                                                width="300"
+                                                trigger="hover">
+                                                <user-card :user="item.from"></user-card>
+                                                <a  slot="reference">{{ item.from.name }}</a>
+                                            </el-popover>
+                                            <a href="https://www.adbug.cn/introduction?from=chatroomvip" target="_blank" v-if="item.from.role=='vip'">
+                                                <img src="/static/images/vip.png" style="width: 18px;"/>
+                                            </a>
                                             <span v-show="setting.isShowTime">
                                                 {{item.time | time}}
                                             </span>
@@ -130,6 +178,70 @@
         </transition>
     </div>
 </script>
+
+<script id="profileEditer" type="text/html">
+<div>
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="60px" class="demo-ruleForm" label-position="left">
+        <el-form-item prop="company">
+            <span slot="label" >
+                <svg slot="label" style="width: 16px;" class="octicon octicon-organization" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M16 12.999c0 .439-.45 1-1 1H7.995c-.539 0-.994-.447-.995-.999H1c-.54 0-1-.561-1-1 0-2.634 3-4 3-4s.229-.409 0-1c-.841-.621-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.442.58 2.5 3c.058 2.41-.159 2.379-1 3-.229.59 0 1 0 1s1.549.711 2.42 2.088C9.196 9.369 10 8.999 10 8.999s.229-.409 0-1c-.841-.62-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.437.581 2.495 3c.059 2.41-.158 2.38-1 3-.229.59 0 1 0 1s3.005 1.366 3.005 4z"></path></svg>
+                公司
+            </span>
+            <el-input v-model="ruleForm.company" placeholder="公司"></el-input>
+        </el-form-item>
+
+        <el-form-item prop="location">
+                <span slot="label" >
+                    <svg style="width: 16px;" class="octicon octicon-location" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6 0C2.69 0 0 2.5 0 5.5 0 10.02 6 16 6 16s6-5.98 6-10.5C12 2.5 9.31 0 6 0zm0 14.55C4.14 12.52 1 8.44 1 5.5 1 3.02 3.25 1 6 1c1.34 0 2.61.48 3.56 1.36.92.86 1.44 1.97 1.44 3.14 0 2.94-3.14 7.02-5 9.05zM8 5.5c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"></path></svg>
+                    城市
+                </span>
+                <el-input v-model="ruleForm.location" placeholder="城市">></el-input>
+        </el-form-item>
+
+        <el-form-item prop="bio">
+            <span slot="label" >介绍</span>
+            <el-input type="textarea" v-model="ruleForm.bio"></el-input>
+        </el-form-item>
+
+        <!-- <el-form-item prop="company">
+            <svg slot="label" style="width: 16px;" class="octicon octicon-mail" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M0 4v8c0 .55.45 1 1 1h12c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H1c-.55 0-1 .45-1 1zm13 0L7 9 1 4h12zM1 5.5l4 3-4 3v-6zM2 12l3.5-3L7 10.5 8.5 9l3.5 3H2zm11-.5l-4-3 4-3v6z"></path></svg>
+            <el-switch v-model="ruleForm.delivery"></el-switch>
+        </el-form-item> -->
+        
+        <el-form-item>
+            <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+</script>
+
+<!--表情组件模版-->
+<script id="userCard" type="text/html">
+    <el-row :gutter="20" type="flex" class="user-pop-card">
+        <el-container>
+                <el-container>
+                    <el-aside width="70px" style="padding-left: 10px;">
+                        <img :src="user.avatarUrl" alt="" height="60">
+                        <div v-if="user.role =='vip'" style="background-color: #f14747!important;   font-weight: 600!important; color: #fff!important;text-align: center!important;">VIP</div>
+                    </el-aside>
+                    <el-main style="padding: 0 16px 0 16px"> 
+                        <div>
+                            <a class="uname">{{ user.name }}</a>
+                            <a class="user-org"> {{ user.company }}</a>
+                        </div>
+                        <div class="user-bio" v-if="user.bio">
+                            {{ user.bio }}
+                        </div>
+                        <div class="mt-2 user-location text-gray text-small" v-if="user.location">
+                            <svg class="octicon octicon-location" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6 0C2.69 0 0 2.5 0 5.5 0 10.02 6 16 6 16s6-5.98 6-10.5C12 2.5 9.31 0 6 0zm0 14.55C4.14 12.52 1 8.44 1 5.5 1 3.02 3.25 1 6 1c1.34 0 2.61.48 3.56 1.36.92.86 1.44 1.97 1.44 3.14 0 2.94-3.14 7.02-5 9.05zM8 5.5c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"></path></svg>
+                            {{ user.location }}
+                       </div>
+                    </el-main>
+                </el-container>
+        </el-container>
+    </el-row>
+</script>
+
 <!--登录组件模版-->
 <script id="imLogin" type="text/html">
     <div class="im-login-box" v-if="0">
@@ -161,6 +273,9 @@
 </script>
 <script src="/static/js/vue.min.2.2.0.js"></script>
 <script src="/static/js/vue-resource.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-avatar-cropper@1.0.5/dist/index.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/static/js/index.js"></script>

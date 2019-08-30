@@ -191,6 +191,109 @@
 })();
 
 
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+var instance = axios.create({
+	baseURL: 'https://testapi.adbug.cn',
+	timeout: 30 * 1000,
+	withCredentials: true,
+});
+
+Vue.prototype.$http = instance;
+
+
+Vue.component("user-card", {
+	template: "#userCard",
+	props: ['user'],
+	data: function () {
+		// this.user.bio = "我要卖掉我的代码 浪迹天涯";
+		// this.user.location = "上海, 中国";
+		// this.user.company = "今日头条";
+		return {
+			
+		}
+	},
+	watch: {
+		user: function () {
+			
+		}
+	},
+	created: function () {
+	
+		
+	},
+	methods: {
+	}
+});
+
+
+var API = axios.create({
+	baseURL: "https://testapi.adbug.cn", // api的base_url
+	timeout: 60000, // 请求超时时间
+	token: 'b04b86c026eb5a81f846b0f4af168b5b',
+	withCredentials: true
+});
+
+
+Vue.component("profile-editer", {
+	template: "#profileEditer",
+	props: ['user'],
+	data: function () {
+		return {
+			ruleForm: {
+			  bio: this.user.bio || '',
+			  company: this.user.company || '',
+			  location: this.user.location || '',
+			},
+			rules: {
+			  bio: [
+				{ min: 3, max: 160, message: '长度在 3 到 160 个字符', trigger: 'blur' }
+			  ]
+			}
+		  };
+	},
+	watch: {
+		user: function () {
+			
+		}
+	},
+	created: function () {
+	
+	},
+	methods: {
+
+		submitForm: function(formName) {
+			var self = this;
+			this.$refs[formName].validate(function (valid){
+				if (valid) {
+					var saveData = {};
+					for(var k in self.ruleForm){
+						if(self.ruleForm[k]){
+							saveData[k] = self.ruleForm[k];
+							self.user[k] = self.ruleForm[k];
+						}
+					}
+
+					API.post('/up/head/link', saveData).then(function(res){
+						if(res.data.code == 200){
+							self.$message('保存成功');;
+						}
+						console.log('done')
+					}, function(){
+						console.log('failed')
+						self.$message('保存失败');;
+					})
+					console.log(self.ruleForm);
+				} else {
+					console.log('error submit!!');
+					return false;
+				}
+			});
+		},
+	}
+});
+
+
+
 
 //登录组件
 Vue.component("ui-login", {
@@ -313,6 +416,7 @@ window.mainApp = new Vue({
 				type: "user"
 			},
 			disconnected: false,
+			dialogVisible: false,
 			//设置tab选项
 			tab: "chat",
 			//在线会话用户列表
@@ -370,12 +474,7 @@ window.mainApp = new Vue({
 		var self = this;
 		socket.on('connect', function (msg) {
 			if (self.isLogin) {
-				socket.emit("login", {
-					name: self.loginUser.name,
-					uid: self.loginUser.uid,
-					role: self.loginUser.role,
-					avatarUrl: self.loginUser.avatarUrl
-				})
+				socket.emit("login", self.loginUser);
 				self.disconnected = false;
 			}
 			console.log('onconnect', msg);
@@ -398,22 +497,22 @@ window.mainApp = new Vue({
 						name: data.username,
 						uid: data.userId,
 						role: data.role,
-						avatarUrl: data.avatarUrl
+						avatarUrl: data.avatarUrl,
+						bio: data.bio,
+						company: data.company,
+						location: data.location
                     })
                     
 					socket.on("loginSuccess", function (user, users, groups, totalUsers) {
 						console.log('loginSuccess');
                         self.channelId = groups[0].id; 
 						self.users = groups;
-						console.log('groups', groups.length);
                         groups.forEach(function(group){
-                            console.log('group', group);
                             self.groupUsers[group.id] = group.online;
                             group.recentMessages.forEach(function (recentMessage) {
                                 if (recentMessage.from.uid == user.uid) {
                                     recentMessage.type = "send";
                                 }
-                                console.log(recentMessage, user);
                                 self.addMessage(recentMessage)
                             })
                         });
@@ -461,6 +560,9 @@ window.mainApp = new Vue({
 		}
 	},
 	methods: {
+		handleClose: function(){
+			this.dialogVisible = false;
+		},
 		toggleSide: function () {
 			this.openSide = !this.openSide;
 		},
@@ -637,7 +739,7 @@ window.mainApp = new Vue({
 
                 }
                 
-				console.log('system', user, type, channelId, totalUsers)
+				// console.log('system', user, type, channelId, totalUsers)
                 _this.groupUsers[channelId] = totalUsers;
                 _this.sendMessageToParent({
 					method: 'usersChange',

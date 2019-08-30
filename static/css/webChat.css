@@ -174,7 +174,8 @@ body{
 }
 .ui-user-list{
     position: absolute;
-    top: 50px;
+    /* top: 50px; */
+    top: 70px;
     bottom: 10px;
     width: 100%;
     overflow-y: auto;
@@ -267,7 +268,7 @@ body{
 }
 /***************聊天窗口-消息样式**********************/
 .ui-messages-box{
-    background: #eeeeee;
+    background: #f4f4f4;
     height: 100%;
     /* margin-left: 180px; */
     position: relative;
@@ -284,7 +285,7 @@ body{
 .ui-channel-header{
     margin: 0 10px;
     height: 36px;
-    line-height: 36px;
+    line-height: 32px;
     font-size: 14px;
     border-bottom: 1px solid #d1d1d1;
     text-align: center;
@@ -331,7 +332,6 @@ body{
 .closeBtn{
     width: 30px;
     height: 30px;
-    padding-top: 5px;
     text-align: center;
     line-height: 30px;
     font-size: 25px;
@@ -339,8 +339,8 @@ body{
     background: url(../images/close.png) no-repeat center;
     background-size: 22px;
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 2px;
+    top: -4px;
     z-index: 555555;
     cursor: pointer;
 }
@@ -831,4 +831,124 @@ body, textarea  {
 .ui-thread-info.isVip a{
     font-weight: 600;
     color: #f14747
+}
+
+
+.top-bar {
+    height: 50px;
+    position: relative;
+    background: #26292e;
+}
+
+
+.ui-channel-header {
+    /* margin: 0 10px; */
+    margin: 0;
+    padding: 0 10px;
+    height: 38px;
+    /* line-height: 100%; */
+    font-size: 14px;
+    border-bottom: 1px solid #dfdfdf;
+    text-align: left;
+    color: #606266;
+    padding-top: 15px;
+    font-size: 16px;
+    padding-left: 15px;
+}
+
+
+.ui-messages-content {
+    position: absolute;
+    top: 70px;
+    bottom: 0;
+    width: 100%;
+}
+
+.ui-messages-content,
+.ui-user-list {
+    top: 54px;
+}
+
+.user-info {
+    /* padding:  10px; */
+    background: #f4f4f4;
+    border-bottom: 1px solid #dfdfdf;
+    height: 40px;
+    height: 53px;
+}
+
+.user-info img {
+    display: inline-block;
+    width: 38px;
+    height: 38px;
+    border-radius: 4px;
+    vertical-align: middle;
+    /* margin-right: 14px; */
+    /* outline: 1px solid #eee;
+    outline: 1px solid rgba(0,0,0,0.05);
+    outline-offset: -1px; */
+    border-radius: 20px;
+    border: 2px solid #f4f4f4;
+}
+
+.user-info:hover img {
+    border: 2px solid white;
+}
+
+.user-avatar {
+    position: absolute;
+    top: 7px;
+    left: 8px;
+    cursor: pointer;
+}
+
+.user-avatar  .el-icon--right{
+    display: none;
+}
+
+.ui-user-search {
+    left: 62px;
+    top: 18px;
+    padding: 0;
+}
+
+.ui-user-search input {
+    width: 93px;
+    border: 1px solid #dfdfdf;
+    background: #f4f4f4;
+    height: 26px;
+    line-height: 26px;
+}
+
+.ui-icon-search {
+    height: 26px;
+    line-height: 26px;
+}
+
+.user-pop-card .uname {
+    font-weight: bold;
+    font-weight: 600!important;
+    font-size: 14px;
+}
+
+.octicon {
+    vertical-align: text-bottom;
+}
+
+.octicon {
+    display: inline-block;
+    fill: currentColor;
+    vertical-align: text-top;
+}
+
+.user-bio {
+    margin-top: 4px;
+}
+
+.user-location{
+    margin-top: 8px;
+}
+
+.user-org {
+    margin-left: 5px;
 }
