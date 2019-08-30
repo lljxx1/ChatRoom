@@ -203,7 +203,7 @@ Vue.prototype.$http = instance;
 
 Vue.component("user-card", {
 	template: "#userCard",
-	props: ['user'],
+	props: ['user', 'editable'],
 	data: function () {
 		// this.user.bio = "我要卖掉我的代码 浪迹天涯";
 		// this.user.location = "上海, 中国";
@@ -222,6 +222,9 @@ Vue.component("user-card", {
 		
 	},
 	methods: {
+		editProfile: function(){
+			this.$emit('handle-edit', true);
+		}
 	}
 });
 
@@ -560,6 +563,10 @@ window.mainApp = new Vue({
 		}
 	},
 	methods: {
+
+		openProfileEditer: function(){
+			this.dialogVisible = true;
+		},
 		handleClose: function(){
 			this.dialogVisible = false;
 		},
