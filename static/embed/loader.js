@@ -184,11 +184,19 @@ function addCssByLink(url) {
             updateCount(msg.count);
         }
 
+        var isAnimate = false;
         function closePannel() {
+            if(isAnimate){
+                console.log('animating')
+                return;
+            };
             label.style = "display:block";
+
+            isAnimate = true;
             closePannelAni();
             setTimeout(function(){
                 isOpend = false;
+                isAnimate = false;
             }, 1000);
             console.log('closePannel')
         }
